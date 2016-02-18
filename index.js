@@ -3,7 +3,8 @@ exports.resolveConflicts = function(doc, resolveFun) {
 
   return db
     .get(doc._id, {
-      open_revs: doc._conflicts
+      // open_revs: doc._conflicts
+      open_revs: 'all'
     })
     .then(function(responses) {
       return responses
@@ -19,7 +20,7 @@ exports.resolveConflicts = function(doc, resolveFun) {
     })
     .then(function(docs) {
       var wDocs = docs.slice()
-      
+
       var winning = wDocs.reduce(function(winning, doc) {
         return winning && resolveFun(doc, winning)
       }, wDocs.pop())
